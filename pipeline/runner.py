@@ -118,7 +118,9 @@ class PipelineRunner:
             report.error = str(exc)
             logger.error("%s: aborted, %s", spec.name, exc)
 
-        except Exception as exc:  # noqa: BLE001 - reported, then re-raised context
+        # A scheduler should get a report, not a traceback: any failure is caught,
+        # recorded, and surfaced through RunReport.error with the watermark intact.
+        except Exception as exc:  # noqa: BLE001
             report.error = f"{type(exc).__name__}: {exc}"
             logger.exception("%s: failed", spec.name)
 

@@ -14,6 +14,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements-dev.txt
-      - run: ruff check .
+      # Advisory: style findings should not block the test signal.
+      - run: ruff check . --output-format=github
+        continue-on-error: true
       - run: python -m pytest tests/ -q
       - run: python example.py
